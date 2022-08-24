@@ -26,8 +26,17 @@ export class UserService {
   }
 
   async findOne(id: number) {
-    return await this.prismaService.user.findMany({
+    return await this.prismaService.user.findUnique({
       where: { id },
+      include: {
+        articles: true,
+      },
+    })
+  }
+
+  async findOneWithEmail(email: string) {
+    return await this.prismaService.user.findUnique({
+      where: { email },
       include: {
         articles: true,
       },

@@ -5,6 +5,6 @@ export class CreateArticleInput {
   @Field(() => String)
   name: string
 
-  @Field(() => String, { nullable: true })
+  @Field()
   description: string
 }
