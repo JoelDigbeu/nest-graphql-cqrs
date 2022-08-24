@@ -19,5 +19,5 @@ export class Article {
   updatedAt: Date
 
   @Field(() => User, { nullable: true })
-  owner: User | null
+  owner?: User | null
 }
