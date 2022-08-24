@@ -15,7 +15,7 @@ export class ArticleResolver {
     return this.articleService.create(createArticleInput)
   }
 
-  @Query(() => [Article], { name: 'article' })
+  @Query(() => [Article], { name: 'articles' })
   findAll() {
     return this.articleService.findAll()
   }

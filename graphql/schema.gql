@@ -38,7 +38,9 @@ type Mutation {
 
 type Query {
   article(id: Int!): Article!
+  articles: [Article!]!
   user(id: Int!): User!
+  users: [User!]!
 }
 
 input UpdateArticleInput {
