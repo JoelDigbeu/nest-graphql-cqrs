@@ -29,7 +29,7 @@ export class ArticleResolver {
   updateArticle(
     @Args('updateArticleInput') updateArticleInput: UpdateArticleInput
   ) {
-    return this.articleService.update(updateArticleInput.id, updateArticleInput)
+    return this.articleService.update(updateArticleInput)
   }
 
   @Mutation(() => Article)

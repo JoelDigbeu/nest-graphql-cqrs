@@ -1,26 +1,48 @@
 import { Injectable } from '@nestjs/common'
+import { SharedPrismaService } from '@nest-graphql-cqrs/shared/prisma'
 import { CreateArticleInput } from '../dto/create-article.input'
 import { UpdateArticleInput } from '../dto/update-article.input'
 
 @Injectable()
 export class ArticleService {
-  create(createArticleInput: CreateArticleInput) {
-    return 'This action adds a new article'
+  constructor(private prismaService: SharedPrismaService) {}
+
+  async create(createArticleInput: CreateArticleInput) {
+    const article = await this.prismaService.article.create({
+      data: { ...createArticleInput, ownerId: 1 },
+    })
+
+    return article
   }
 
-  findAll() {
-    return `This action returns all article`
+  async findAll() {
+    return await this.prismaService.article.findMany({
+      include: {
+        owner: true,
+      },
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} article`
+  async findOne(id: number) {
+    return await this.prismaService.article.findUnique({
+      where: { id },
+      include: { owner: true },
+    })
   }
 
-  update(id: number, updateArticleInput: UpdateArticleInput) {
-    return `This action updates a #${id} article`
+  update(updateArticleInput: UpdateArticleInput) {
+    const { id, ...data } = updateArticleInput
+    return this.prismaService.article.update({
+      where: { id },
+      data: {
+        ...data,
+      },
+    })
   }
 
   remove(id: number) {
-    return `This action removes a #${id} article`
+    return this.prismaService.article.delete({
+      where: { id },
+    })
   }
 }
