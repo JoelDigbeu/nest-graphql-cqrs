@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
@@ -32,6 +33,7 @@ export class AuthService {
 
   async login(credentials: LoginCredentialsInput) {
     const user = await this.userService.findOneWithEmail(credentials.email)
+    if (!user) throw new NotFoundException('Invalid credentials')
 
     this.validateUser(credentials.password, user)
 
