@@ -8,8 +8,9 @@ import { AppService } from './app.service'
 
 import { UserModule } from '../features/user/user.module'
 import { ArticleModule } from '../features/article/article.module'
+import { AuthModule } from '../features/auth/auth.module'
 
-const modules = [UserModule, ArticleModule]
+const modules = [UserModule, ArticleModule, AuthModule]
 
 @Module({
   imports: [
