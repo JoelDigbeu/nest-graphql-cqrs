@@ -11,6 +11,11 @@ type Article {
   updatedAt: DateTime!
 }
 
+type AuthResponse {
+  token: String!
+  user: User!
+}
+
 input CreateArticleInput {
   description: String!
   name: String!
@@ -30,7 +35,7 @@ scalar DateTime
 type Mutation {
   createArticle(createArticleInput: CreateArticleInput!): Article!
   createUser(createUserInput: CreateUserInput!): User!
-  register(credentials: RegisterInput!): User!
+  register(credentials: RegisterInput!): AuthResponse!
   removeArticle(id: Int!): Article!
   removeUser(id: Int!): User!
   updateArticle(updateArticleInput: UpdateArticleInput!): Article!

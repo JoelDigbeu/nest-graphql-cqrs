@@ -22,5 +22,5 @@ export class User {
   updatedAt: Date
 
   @Field(() => [Article], { nullable: true })
-  articles: Article[] | null
+  articles?: Article[] | null
 }
