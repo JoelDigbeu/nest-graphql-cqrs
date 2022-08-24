@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nest-graphql-cqrs/shared/prisma": ["libs/shared/prisma/src/index.ts"]
+      "@nest-graphql-cqrs/shared/prisma": ["libs/shared/prisma/src/index.ts"],
+      "@nest-graphql-cqrs/shared/token": ["libs/shared/token/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

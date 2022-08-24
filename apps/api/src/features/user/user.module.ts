@@ -6,5 +6,6 @@ import { SharedPrismaModule } from '@nest-graphql-cqrs/shared/prisma'
 @Module({
   imports: [SharedPrismaModule],
   providers: [UserResolver, UserService],
+  exports: [UserService],
 })
 export class UserModule {}
