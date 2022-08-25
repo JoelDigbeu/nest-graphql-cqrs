@@ -1,10 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { User } from '../../user/entities/user.entity'
 import { SharedTokenService } from '@nest-graphql-cqrs/shared/token'
 
 import { UserService } from '../../user/service/user.service'
-import { RegisterInput } from '../dto'
+import { RegisterInput, LoginCredentialsInput } from '../dto'
 
 @Injectable()
 export class AuthService {
@@ -26,7 +31,16 @@ export class AuthService {
     }
   }
 
-  async saveUser(userData: RegisterInput) {
+  async login(credentials: LoginCredentialsInput) {
+    const user = await this.userService.findOneWithEmail(credentials.email)
+    if (!user) throw new NotFoundException('Invalid credentials')
+
+    this.validateUser(credentials.password, user)
+
+    return { user, token: this.getToken(user) }
+  }
+
+  private async saveUser(userData: RegisterInput) {
     const { password } = userData
 
     const data: RegisterInput = {
@@ -37,13 +51,26 @@ export class AuthService {
     return await this.userService.create(data)
   }
 
-  getToken(user: User) {
+  private getToken(user: User) {
     const { id, email } = user
     return this.tokenService.generateLoginToken({ id, email })
   }
 
-  hashPassword(password: string): string {
+  private hashPassword(password: string): string {
     const salt: string = bcrypt.genSaltSync()
     return bcrypt.hashSync(password, salt)
+  }
+
+  private validateUser(password: string, user?: User) {
+    const error = new BadRequestException('Invalid password or email !')
+    const isValidPassword = this.validatePassword(password, user.password)
+
+    if (!user) throw error
+
+    if (!isValidPassword) throw new UnauthorizedException('Invalid password')
+  }
+
+  private validatePassword(password: string, hashPassword: string): boolean {
+    return bcrypt.compareSync(password, hashPassword)
   }
 }
