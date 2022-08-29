@@ -6,7 +6,7 @@ import { SharedTokenService } from './shared-token.service'
   controllers: [],
   imports: [
     JwtModule.register({
-      secret: 'jowellDev',
+      secret: 'JowellDev',
     }),
   ],
   providers: [SharedTokenService],

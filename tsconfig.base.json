@@ -15,6 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nest-graphql-cqrs/shared/guard": ["libs/shared/guard/src/index.ts"],
+      "@nest-graphql-cqrs/shared/jwt-strategy": [
+        "libs/shared/jwt-strategy/src/index.ts"
+      ],
       "@nest-graphql-cqrs/shared/prisma": ["libs/shared/prisma/src/index.ts"],
       "@nest-graphql-cqrs/shared/token": ["libs/shared/token/src/index.ts"]
     }

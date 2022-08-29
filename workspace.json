@@ -3,6 +3,8 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
+    "shared-guard": "libs/shared/guard",
+    "shared-jwt-strategy": "libs/shared/jwt-strategy",
     "shared-prisma": "libs/shared/prisma",
     "shared-token": "libs/shared/token"
   }
