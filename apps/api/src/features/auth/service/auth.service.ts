@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { User } from '../../user/entities/user.entity'
-import { SharedTokenService } from '@nest-graphql-cqrs/shared/token'
+import { SharedTokenService, TokenType } from '@nest-graphql-cqrs/shared/token'
 
 import { UserService } from '../../user/service/user.service'
 import { RegisterInput, LoginCredentialsInput } from '../dto'
@@ -23,7 +23,7 @@ export class AuthService {
     if (user) throw new BadRequestException('Email already exists !')
 
     const createdUser = await this.saveUser(credentials)
-    const token = this.getToken(createdUser)
+    const token = this.getToken(createdUser, 'LOGIN')
 
     return {
       user: { ...createdUser },
@@ -37,7 +37,7 @@ export class AuthService {
 
     this.validateUser(credentials.password, user)
 
-    return { user, token: this.getToken(user) }
+    return { user, token: this.getToken(user, 'LOGIN') }
   }
 
   private async saveUser(userData: RegisterInput) {
@@ -51,9 +51,9 @@ export class AuthService {
     return await this.userService.create(data)
   }
 
-  private getToken(user: User) {
+  private getToken(user: User, type: TokenType) {
     const { id, email } = user
-    return this.tokenService.generateLoginToken({ id, email })
+    return this.tokenService.generateLoginToken({ id, email, type })
   }
 
   private hashPassword(password: string): string {
