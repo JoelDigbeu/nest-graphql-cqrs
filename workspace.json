@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
+    "shared-decorators": "libs/shared/decorators",
     "shared-guard": "libs/shared/guard",
     "shared-jwt-strategy": "libs/shared/jwt-strategy",
     "shared-prisma": "libs/shared/prisma",
