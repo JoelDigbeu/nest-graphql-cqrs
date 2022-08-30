@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { SharedPrismaService } from '@nest-graphql-cqrs/shared/prisma'
 import { CreateArticleInput } from '../dto/create-article.input'
 import { UpdateArticleInput } from '../dto/update-article.input'
@@ -40,7 +40,11 @@ export class ArticleService {
     })
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const article = await this.findOne(id)
+
+    if (!article) throw new NotFoundException('Article not found !')
+
     return this.prismaService.article.delete({
       where: { id },
     })
