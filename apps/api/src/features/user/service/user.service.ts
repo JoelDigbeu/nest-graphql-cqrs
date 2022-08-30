@@ -1,4 +1,5 @@
 import { SharedPrismaService } from '@nest-graphql-cqrs/shared/prisma'
+import { NotFoundException } from '@nestjs/common'
 import { Injectable } from '@nestjs/common'
 import { CreateUserInput } from '../dto/create-user.input'
 import { UpdateUserInput } from '../dto/update-user.input'
@@ -53,7 +54,10 @@ export class UserService {
     })
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const user = await this.findOne(id)
+    if (!user) throw new NotFoundException('User not found')
+
     return this.prismaService.user.delete({
       where: { id },
     })
