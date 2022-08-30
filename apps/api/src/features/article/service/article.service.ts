@@ -7,9 +7,9 @@ import { UpdateArticleInput } from '../dto/update-article.input'
 export class ArticleService {
   constructor(private prismaService: SharedPrismaService) {}
 
-  async create(createArticleInput: CreateArticleInput) {
+  async create(createArticleInput: CreateArticleInput, ownerId: number) {
     const article = await this.prismaService.article.create({
-      data: { ...createArticleInput, ownerId: 1 },
+      data: { ...createArticleInput, ownerId },
     })
 
     return article

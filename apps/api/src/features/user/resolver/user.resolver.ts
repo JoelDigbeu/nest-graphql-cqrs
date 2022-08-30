@@ -3,7 +3,7 @@ import { UserService } from '../service/user.service'
 import { User } from '../entities/user.entity'
 import { CreateUserInput } from '../dto/create-user.input'
 import { UpdateUserInput } from '../dto/update-user.input'
-import { Req, UseGuards } from '@nestjs/common'
+import { UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from '@nest-graphql-cqrs/shared/guard'
 import { CurrentUser } from '@nest-graphql-cqrs/shared/decorators'
 
@@ -18,13 +18,13 @@ export class UserResolver {
 
   @Query(() => [User], { name: 'users' })
   @UseGuards(JwtAuthGuard)
-  findAll(@CurrentUser() user: any) {
+  findAll() {
     return this.userService.findAll()
   }
 
   @Query(() => User, { name: 'user' })
   @UseGuards(JwtAuthGuard)
-  findOne(@Args('id', { type: () => Int }) id: number, @Req() req: any) {
+  findOne(@Args('id', { type: () => Int }) id: number) {
     return this.userService.findOne(id)
   }
 
