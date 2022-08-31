@@ -49,4 +49,12 @@ export class ArticleService {
       where: { id },
     })
   }
+
+  getArticleOwner(articleId: number) {
+    return this.prismaService.article
+      .findUnique({
+        where: { id: articleId },
+      })
+      .owner()
+  }
 }

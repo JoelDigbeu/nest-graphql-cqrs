@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Root,
+} from '@nestjs/graphql'
 import { UseGuards } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { Article } from '../entities/article.entity'
@@ -15,21 +23,18 @@ export class ArticleResolver {
   @Mutation(() => Article)
   createArticle(
     @Args('createArticleInput') createArticleInput: CreateArticleInput,
-    @CurrentUser() user: any
+    @CurrentUser() user
   ) {
     return this.articleService.create(createArticleInput, user.id)
   }
 
   @Query(() => [Article], { name: 'articles' })
-  findAll(@CurrentUser() user: any) {
+  findAll() {
     return this.articleService.findAll()
   }
 
   @Query(() => Article, { name: 'article' })
-  findOne(
-    @Args('id', { type: () => Int }) id: number,
-    @CurrentUser() user: any
-  ) {
+  findOne(@Args('id', { type: () => Int }) id: number) {
     return this.articleService.findOne(id)
   }
 
@@ -43,5 +48,10 @@ export class ArticleResolver {
   @Mutation(() => Article)
   removeArticle(@Args('id', { type: () => Int }) id: number) {
     return this.articleService.remove(id)
+  }
+
+  @ResolveField()
+  async owner(@Root() article: Article) {
+    return this.articleService.getArticleOwner(article.id)
   }
 }
