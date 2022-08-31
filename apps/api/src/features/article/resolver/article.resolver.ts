@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Root,
+} from '@nestjs/graphql'
 import { UseGuards } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { Article } from '../entities/article.entity'
@@ -43,5 +51,10 @@ export class ArticleResolver {
   @Mutation(() => Article)
   removeArticle(@Args('id', { type: () => Int }) id: number) {
     return this.articleService.remove(id)
+  }
+
+  @ResolveField()
+  async owner(@Root() article: Article) {
+    return this.articleService.getArticleOwner(article.id)
   }
 }
