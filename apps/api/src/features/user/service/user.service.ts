@@ -62,4 +62,12 @@ export class UserService {
       where: { id },
     })
   }
+
+  getUserArticles(userId: number) {
+    return this.prismaService.user
+      .findUnique({
+        where: { id: userId },
+      })
+      .articles()
+  }
 }

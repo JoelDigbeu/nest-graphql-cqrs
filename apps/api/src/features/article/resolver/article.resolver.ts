@@ -23,21 +23,18 @@ export class ArticleResolver {
   @Mutation(() => Article)
   createArticle(
     @Args('createArticleInput') createArticleInput: CreateArticleInput,
-    @CurrentUser() user: any
+    @CurrentUser() user
   ) {
     return this.articleService.create(createArticleInput, user.id)
   }
 
   @Query(() => [Article], { name: 'articles' })
-  findAll(@CurrentUser() user: any) {
+  findAll() {
     return this.articleService.findAll()
   }
 
   @Query(() => Article, { name: 'article' })
-  findOne(
-    @Args('id', { type: () => Int }) id: number,
-    @CurrentUser() user: any
-  ) {
+  findOne(@Args('id', { type: () => Int }) id: number) {
     return this.articleService.findOne(id)
   }
 
