@@ -3,6 +3,9 @@ import { UserService } from '../service/user.service'
 import { User } from '../entities/user.entity'
 import { CreateUserInput } from '../dto/create-user.input'
 import { UpdateUserInput } from '../dto/update-user.input'
+import { UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from '@nest-graphql-cqrs/shared/guard'
+import { CurrentUser } from '@nest-graphql-cqrs/shared/decorators'
 
 @Resolver(() => User)
 export class UserResolver {
@@ -14,21 +17,31 @@ export class UserResolver {
   }
 
   @Query(() => [User], { name: 'users' })
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.userService.findAll()
   }
 
   @Query(() => User, { name: 'user' })
+  @UseGuards(JwtAuthGuard)
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.userService.findOne(id)
   }
 
+  @Query(() => User, { name: 'currentUser' })
+  @UseGuards(JwtAuthGuard)
+  getAuthenticatedUser(@CurrentUser() user: any) {
+    return this.userService.findOne(user.id)
+  }
+
   @Mutation(() => User)
+  @UseGuards(JwtAuthGuard)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.update(updateUserInput)
   }
 
   @Mutation(() => User)
+  @UseGuards(JwtAuthGuard)
   removeUser(@Args('id', { type: () => Int }) id: number) {
     return this.userService.remove(id)
   }

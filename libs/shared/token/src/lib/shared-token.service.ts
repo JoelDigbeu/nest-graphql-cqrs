@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { JwtPayload } from './dto/jwt-payload.dto'
+import { AuthJwtPayload } from './dto/jwt-payload.dto'
 
 @Injectable()
 export class SharedTokenService {
@@ -9,7 +9,7 @@ export class SharedTokenService {
   private TOKEN_VALIDITY_TIME = '1d'
   private RESET_PASSWORD_EXPIRES_IN = '360s'
 
-  generateLoginToken(payload: JwtPayload) {
+  generateLoginToken(payload: AuthJwtPayload) {
     return this.jwtService.sign(payload, {
       expiresIn: this.TOKEN_VALIDITY_TIME,
     })

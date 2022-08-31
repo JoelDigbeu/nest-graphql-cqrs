@@ -1,27 +1,35 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { Article } from '../entities/article.entity'
 import { CreateArticleInput } from '../dto/create-article.input'
 import { UpdateArticleInput } from '../dto/update-article.input'
+import { JwtAuthGuard } from '@nest-graphql-cqrs/shared/guard'
+import { CurrentUser } from '@nest-graphql-cqrs/shared/decorators'
 
 @Resolver(() => Article)
+@UseGuards(JwtAuthGuard)
 export class ArticleResolver {
   constructor(private readonly articleService: ArticleService) {}
 
   @Mutation(() => Article)
   createArticle(
-    @Args('createArticleInput') createArticleInput: CreateArticleInput
+    @Args('createArticleInput') createArticleInput: CreateArticleInput,
+    @CurrentUser() user: any
   ) {
-    return this.articleService.create(createArticleInput)
+    return this.articleService.create(createArticleInput, user.id)
   }
 
   @Query(() => [Article], { name: 'articles' })
-  findAll() {
+  findAll(@CurrentUser() user: any) {
     return this.articleService.findAll()
   }
 
   @Query(() => Article, { name: 'article' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(
+    @Args('id', { type: () => Int }) id: number,
+    @CurrentUser() user: any
+  ) {
     return this.articleService.findOne(id)
   }
 
