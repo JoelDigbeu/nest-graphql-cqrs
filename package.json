@@ -33,6 +33,7 @@
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
+    "@nrwl/angular": "^14.5.10",
     "@nrwl/cli": "14.4.3",
     "@nrwl/eslint-plugin-nx": "14.4.3",
     "@nrwl/jest": "14.4.3",
@@ -47,6 +48,7 @@
     "@types/passport-jwt": "^3.0.6",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
+    "cypress": "^10.7.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.5.1",
